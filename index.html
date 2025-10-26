@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Extreme Play BR</title>
+  <meta name="description" content="Site editável - Extreme Play BR. Edite direto na página e baixe o resultado." />
+
+  <!-- Importa o CSS externo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+<!-- Imagem de Login no canto superior direito -->
+<a href="login.html" id="loginLink">
+  <img src="login.png" alt="Login" id="loginIcon">
+</a>
+
+
+  <!-- 🔹 MENU HAMBÚRGUER -->
+<div class="menu">
+ <button class="menu">
+  <img id="menuIcon" src="icons8-menu-50.png" alt="Menu" class="menu-icon">
+
+  <div id="dropdownMenu" class="menu-hidden">
+    <ul>
+      <li><a href="seu perfil.html">👤 Perfil</a></li>
+      <li><a href="jogos.html">🎮 Jogos</a></li>
+      <li><a href="dicas.html">💡 Dicas</a></li>
+      <li><a href="eventos.html">📢 Eventos</a></li>
+      <li><a href="codigos.html">🎁 Códigos Promocionais</a></li>
+      <li><a href="bugs.html">🐞 Bugs e Truques</a></li> 
+      <li><a href="sugestoes.html">🛠️ Sugestões</a></li>
+      <li><a href="perguntas.html">❓ Perguntas</a></li>
+      <li><a href="sobre.html">ℹ️ Sobre o Site</a></li>
+      <li><a href="ajuda.html">🆘 Ajuda</a></li>
+      <li><a href="contato.html">📞 Contato</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="brand">
+      <div class="logo" id="logoText">EP</div>
+      <div>
+        <div class="title" id="siteTitle">Extreme Play BR</div>
+        <div class="small">Crie e edite seu site diretamente aqui</div>
+      </div>
+    </div>
+    <nav>
+      <button id="saveLocal">Salvar local</button>
+      <button id="loadLocal">Carregar local</button>
+      <button id="download">Baixar site</button>
+      <button id="resizeToggle">Ativar Redimensionamento</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero card">
+      <div>
+        <h1 contenteditable="true" class="editor" id="heroTitle">
+          Seu playground de jogos e eventos radicais — Extreme Play BR
+        </h1>
+
+        <img src="unnamed.jpg" alt="Logo Extreme Play BR" 
+             style="width:150px; height:auto; margin-top:10px;">
+
+        <p contenteditable="true" class="editor" id="heroSubtitle">
+          Espaço para campeonatos, encontros, tutoriais e mais. 
+          Edite este texto para apresentar seu projeto.
+        </p>
+
+        <!-- Painel de sorteio -->
+        <section style="text-align:center; margin-top:40px;">
+          <button id="toggleSorteio" class="toggle-btn">▼ Mostrar Sorteio</button>
+
+          <div id="sorteioBox" style="display:none; margin-top:20px;">
+            <h2>🎲 Sorteio de Números</h2>
+            <p>Escolha o intervalo e clique em "Sortear".</p>
+
+            <label for="min">Mínimo:</label>
+            <input type="number" id="min" value="0">
+
+            <label for="max">Máximo:</label>
+            <input type="number" id="max" value="100">
+
+            <br><br>
+            <button id="sortearBtn">Sortear</button>
+            <h3 id="resultado"></h3>
+          </div>
+        </section>
+
+        <div class="cols">
+          <div class="card">
+            <h3 contenteditable="true" class="editor" id="aboutTitle">Sobre</h3>
+            <div contenteditable="true" class="editor" id="aboutText">
+              Extreme Play BR é um lugar para jogadores e amantes da adrenalina.
+              Adicione eventos, fotos e links aqui.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 contenteditable="true" class="editor" id="eventsTitle">Próximos eventos</h3>
+            <div contenteditable="true" class="editor" id="eventsList">
+              - Torneio mensal<br>- Encontros semanais<br>- Lives com convidados
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="flex">
+          <label class="small">Nome do site (link):</label>
+          <input id="siteNameInput" class="input" value="extremeplaybr" />
+          <div class="link-sample" id="linkSample">https://EPBR2025.com.br/extremeplaybr</div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card preview">
+          <div style="text-align:center;margin-bottom:12px">
+            <img id="logoImg" src="" alt="logo" 
+                 style="width:100%;max-width:220px;border-radius:8px;display:none" />
+            <div id="logoPlaceholder">Logo (arraste aqui ou selecione)</div>
+            <input type="file" id="logoFile" accept="image/*" />
+          </div>
+
+          <div>
+            <label class="small">Cor principal (hex):</label>
+            <input id="accentColor" class="input" value="#ff3b3b" />
+          </div>
+
+          <div style="margin-top:10px">
+            <label class="small">Barra de ferramentas:</label>
+            <div class="controls">
+              <button onclick="format('bold')">B</button>
+              <button onclick="format('italic')">I</button>
+              <button onclick="format('underline')">U</button>
+              <button onclick="format('insertUnorderedList')">• Lista</button>
+              <button onclick="format('createLink')">Link</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="card small">
+          <div style="margin-bottom:8px">Amostra de link público:</div>
+          <div class="link-sample" id="publicLink">
+            https://seusite.com/<span id="slugText">extremeplaybr</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section style="margin-top:18px" class="card">
+      <h3>Seção de contato</h3>
+      <div contenteditable="true" class="editor" id="contactText">
+        Email: contato@extremeplaybr.com.br<br>Instagram: @extremeplaybr
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="small">Criado com ❤️ — Extreme Play BR — arquivo editável</div>
+  </footer>
+
+  <!-- Importa o JS -->
+  <script src="script.js"></script>
+</body>
+</html>

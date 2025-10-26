@@ -1,0 +1,264 @@
+:root {
+  --accent: #ff3b3b;
+  background: #0f1724;
+  color: #e6eef8;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #061024 0%, #071226 100%);
+  color: var(--text, #e6eef8);
+}
+
+/* Cabeçalho */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(6px);
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+}
+
+button, .btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Conteúdo */
+main {
+  max-width: 1100px;
+  margin: 28px auto;
+  padding: 20px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: center;
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.editor {
+  min-height: 180px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px dashed rgba(255,255,255,0.04);
+  background: transparent;
+}
+
+footer {
+  text-align: center;
+  padding: 24px;
+  color: rgba(230,238,248,0.6);
+}
+
+.small { font-size: 13px; }
+.flex { display: flex; gap: 12px; align-items: center; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0ff;
+  font-size: 24px;
+  transition: transform 0.3s;
+}
+
+@media(max-width:900px) {
+  .hero { grid-template-columns: 1fr; }
+  .cols { grid-template-columns: 1fr; }
+}
+.resize-btn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 9999;
+  transition: background 0.3s;
+}
+
+.resize-btn:hover {
+  background-color: #0056b3;
+}
+
+.resizable {
+  resize: both;
+  overflow: auto;
+  outline: 2px dashed #777;
+}
+/* Posiciona o ícone de login no canto superior direito */
+#loginLink {
+  position: fixed; /* posição fixa em relação ao header */
+  top: 0px;          /* distância do topo */
+  right: 0px;        /* distância da direita */
+  z-index: 1000;      /* garante que fique acima dos outros elementos */
+}
+
+#loginIcon {
+  width: 90px;        /* ajuste o tamanho da imagem */
+  height: 70px;
+  cursor: pointer;    /* indica que é clicável */
+  transition: transform 0.2s; /* efeito suave ao passar o mouse */
+}
+
+#loginIcon:hover {
+  transform: scale(1.1); /* leve zoom ao passar o mouse */
+}
+
+/* 🔹 Container do menu */
+.menu-container {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  z-index: 1000;
+}
+
+/* 🔹 Ícone */
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.menu-icon:hover {
+  transform: scale(1.1);
+}
+
+/* 🔹 Menu suspenso */
+#dropdownMenu {
+  position: fixed;
+  top: 100px;
+  left: 0;0
+  background: linear-gradient(180deg, #1a1a1a, #2c2c2c);
+  border: 0px solid #444;
+  border-radius: 0px;
+  width: 180px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  overflow: hidden;
+  z-index: 999;
+  transform-origin: top;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 🔹 Animação suave */
+.menu-hidden {
+  opacity: 0;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+.menu-visible {
+  opacity: 1;
+  transform: scaleY(1);
+  pointer-events: auto;
+}
+
+/* 🔹 Estilo dos links */
+#dropdownMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#dropdownMenu li {
+  border-bottom: 1px solid #333;
+}
+#dropdownMenu li:last-child {
+  border-bottom: none;
+}
+#dropdownMenu a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #eee;
+  font-size: 15px;
+  transition: background 0.2s, color 0.2s;
+}
+#dropdownMenu a:hover {
+  background: #0078ff;
+  color: #fff;
+}
+
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+ }
+ /* Menu principal */
+.menu {
+  position: relative; /* necessário para o dropdown */
+}
+
+/* Dropdown */
+.menu-dropdown {
+  position: absolute;
+  top: 0; /* ajusta verticalmente */
+  left: 0; /* ajusta horizontalmente para abrir na área desejada */
+  width: 200px; /* largura do menu, pode ajustar */
+  max-height: 0; /* inicialmente fechado */
+  overflow: hidden;
+  background-color: #1f2937; /* cor de fundo do menu */
+  border-radius: 8px;
+  transition: max-height 0.3s ease; /* animação suave */
+  z-index: 1000;
+}
+
+/* Quando o menu estiver aberto */
+.menu.open .menu-dropdown {
+  max-height: 500px; /* altura máxima para mostrar o menu */
+}
+}
+
