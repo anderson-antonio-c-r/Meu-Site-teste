@@ -1,40 +1,95 @@
-// Função do sorteio
-document.getElementById("sortearBtn").addEventListener("click", () => {
-  const min = parseInt(document.getElementById("min").value);
-  const max = parseInt(document.getElementById("max").value);
-  const resultado = Math.floor(Math.random() * (max - min + 1)) + min;
-  document.getElementById("resultado").innerText = `Número sorteado: ${resultado}`;
-});
-
-// Mostrar/ocultar painel do sorteio
-document.getElementById("toggleSorteio").addEventListener("click", () => {
-  const box = document.getElementById("sorteioBox");
-  const btn = document.getElementById("toggleSorteio");
-  const isHidden = box.style.display === "none" || box.style.display === "";
-  box.style.display = isHidden ? "block" : "none";
-  btn.innerText = isHidden ? "▲ Ocultar Sorteio" : "▼ Mostrar Sorteio";
-});
-
-// Modo Editor
-document.addEventListener("DOMContentLoaded", () => {
-  let editMode = false;
-  let dragElement = null;
-
-  const originalContent = document.body.innerHTML;
-
-  if (localStorage.getItem("siteContent")) {
-    document.body.innerHTML = localStorage.getItem("siteContent");
+// 🔹 Função para inicializar todos os event listeners
+function initEventListeners() {
+  // Botão de sorteio
+  const sortearBtn = document.getElementById("sortearBtn");
+  if (sortearBtn) {
+    sortearBtn.addEventListener("click", () => {
+      const min = parseInt(document.getElementById("min").value);
+      const max = parseInt(document.getElementById("max").value);
+      if (!isNaN(min) && !isNaN(max) && max >= min) {
+        const resultado = Math.floor(Math.random() * (max - min + 1)) + min;
+        document.getElementById("resultado").innerText = `Número sorteado: ${resultado}`;
+      } else {
+        alert("Por favor, insira valores válidos!");
+      }
+    });
   }
 
-  const editorControls = `
-    <div class="editor-controls">
-      <button id="editToggle">✏️ Modo Editor</button>
-      <button id="saveSite">💾 Salvar</button>
-      <button id="restoreDefault">♻️ Restaurar padrão</button>
-      <button id="downloadHTML">⬇️ Baixar HTML</button>
-    </div>
-  `;
-  document.body.insertAdjacentHTML("beforeend", editorControls);
+  // Mostrar/ocultar painel do sorteio
+  const toggleBtn = document.getElementById("toggleSorteio");
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const box = document.getElementById("sorteioBox");
+      const isHidden = box.style.display === "none" || box.style.display === "";
+      box.style.display = isHidden ? "block" : "none";
+      toggleBtn.innerText = isHidden ? "▲ Ocultar Sorteio" : "▼ Mostrar Sorteio";
+    });
+  }
+
+  // Menu suspenso
+  const menuIcon = document.getElementById("menuIcon");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  if (menuIcon && dropdownMenu) {
+    menuIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("menu-visible");
+      dropdownMenu.classList.toggle("menu-hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!menuIcon.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.classList.add("menu-hidden");
+        dropdownMenu.classList.remove("menu-visible");
+      }
+    });
+  }
+
+  // Menu flutuante
+  const menuButton = document.querySelector('.menu-button');
+  const menu = document.querySelector('.menu');
+  if (menuButton && menu) {
+    menuButton.addEventListener('click', () => {
+      menu.classList.toggle('open');
+    });
+  }
+
+  // Modo redimensionamento
+  const resizeToggle = document.getElementById("resizeToggle");
+  if (resizeToggle) {
+    let resizeMode = resizeToggle.dataset.active === "true";
+    resizeToggle.addEventListener("click", () => {
+      resizeMode = !resizeMode;
+      resizeToggle.dataset.active = resizeMode;
+
+      const allElements = document.querySelectorAll("img, div, section, article, p, h1, h2, h3, h4, h5, h6");
+      allElements.forEach(el => {
+        if (resizeMode) {
+          el.classList.add("resizable");
+        } else {
+          el.classList.remove("resizable");
+        }
+      });
+
+      resizeToggle.textContent = resizeMode
+        ? "❌ Desativar Redimensionamento"
+        : "🖱️ Ativar Redimensionamento";
+
+      alert(
+        resizeMode
+          ? "🔧 Modo de redimensionamento ativado! Agora você pode redimensionar imagens e layouts arrastando os cantos."
+          : "✅ Modo de redimensionamento desativado."
+      );
+    });
+
+    // Reaplicar redimensionamento se estava ativo
+    if (resizeMode) resizeToggle.click();
+  }
+}
+
+// 🔹 Função para ativar o modo editor
+function initEditor(originalContent) {
+  let editMode = false;
+  let dragElement = null;
 
   function dragStart(e) {
     dragElement = e.target;
@@ -51,6 +106,20 @@ document.addEventListener("DOMContentLoaded", () => {
     dragElement = null;
   }
 
+  // Inserir controles do editor
+  const editorControls = `
+    <div class="editor-controls">
+      <button id="editToggle">✏️ Modo Editor</button>
+      <button id="saveSite">💾 Salvar</button>
+      <button id="restoreDefault">♻️ Restaurar padrão</button>
+      <button id="downloadHTML">⬇️ Baixar HTML</button>
+    </div>
+  `;
+  if (!document.getElementById("editToggle")) {
+    document.body.insertAdjacentHTML("beforeend", editorControls);
+  }
+
+  // Toggle editor
   document.getElementById("editToggle").addEventListener("click", () => {
     editMode = !editMode;
     document.body.contentEditable = editMode;
@@ -81,17 +150,18 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("💾 Site salvo com sucesso!");
   });
 
-  // Restaurar
+  // Restaurar padrão
   document.getElementById("restoreDefault").addEventListener("click", () => {
     if (confirm("Tem certeza que deseja restaurar o site original?")) {
       localStorage.removeItem("siteContent");
       document.body.innerHTML = originalContent;
+      initEventListeners(); // reaplica listeners
+      initEditor(originalContent); // reaplica editor
       alert("♻️ Site restaurado!");
-      location.reload();
     }
   });
 
-    // Baixar HTML
+  // Baixar HTML
   document.getElementById("downloadHTML").addEventListener("click", () => {
     const content = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
     const blob = new Blob([content], { type: "text/html" });
@@ -101,68 +171,22 @@ document.addEventListener("DOMContentLoaded", () => {
     a.click();
     alert("⬇️ Site baixado como index.html!");
   });
+}
 
-   window.addEventListener("beforeunload", () => {
-    localStorage.setItem("siteContent", document.body.innerHTML);
-  });
+// 🔹 Função principal
+document.addEventListener("DOMContentLoaded", () => {
+  const originalContent = document.body.innerHTML;
 
-  // 🔹 Modo redimensionamento
-  let resizeMode = false;
-  const resizeToggle = document.getElementById("resizeToggle");
-
-  if (resizeToggle) {
-    resizeToggle.addEventListener("click", () => {
-      resizeMode = !resizeMode;
-
-      const allElements = document.querySelectorAll(
-        "img, div, section, article, p, h1, h2, h3, h4, h5, h6"
-      );
-
-      allElements.forEach(el => {
-        if (resizeMode) {
-          el.classList.add("resizable");
-        } else {
-          el.classList.remove("resizable");
-        }
-      });
-
-      resizeToggle.textContent = resizeMode
-        ? "❌ Desativar Redimensionamento"
-        : "🖱️ Ativar Redimensionamento";
-
-      alert(
-        resizeMode
-          ? "🔧 Modo de redimensionamento ativado! Agora você pode redimensionar imagens e layouts arrastando os cantos."
-          : "✅ Modo de redimensionamento desativado."
-      );
-    });
+  // Carregar conteúdo salvo
+  if (localStorage.getItem("siteContent")) {
+    document.body.innerHTML = localStorage.getItem("siteContent");
   }
 
-  // 🔹 Menu suspenso ao clicar no ícone
-  const menuIcon = document.getElementById("menuIcon");
-  const dropdownMenu = document.getElementById("dropdownMenu");
+  initEventListeners();   // Aplica listeners do sorteio, menu e redimensionamento
+  initEditor(originalContent); // Inicializa editor
 
-  if (menuIcon && dropdownMenu) {
-    menuIcon.addEventListener("click", (e) => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle("menu-visible");
-      dropdownMenu.classList.toggle("menu-hidden");
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!menuIcon.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        dropdownMenu.classList.add("menu-hidden");
-        dropdownMenu.classList.remove("menu-visible");
-      }
-    });
-const menuButton = document.querySelector('.menu-button');
-const menu = document.querySelector('.menu');
-
-menuButton.addEventListener('click', () => {
-  menu.classList.toggle('open');
+  // Salvar sempre antes de sair
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("siteContent", document.body.innerHTML);
+  });
 });
- }
-
-}); // <-- Aqui fecha o DOMContentLoaded
-
-
